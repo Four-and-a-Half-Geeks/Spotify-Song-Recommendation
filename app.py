@@ -57,11 +57,16 @@ if __name__ == "__main__":
     
     
 #Results:
- #   Track Recommendations: ['The House That Built Me', 'Achorripsis',
- # 'Capriccio Espagnol, Op. 34: I. Alborada', 'Follow That Dust',
- # 'Tchaikovsky: Swan Lake, Op. 20, Act II: No. 13d, Dance of the Swans.
- # Dance of the Little Swans', 'Rumor', 'Find out Who Your Friends Are',
- # 'Summer Cool', 'Drunk On A Plane', 'Rearview Town', 'Sonate pour clarinette et piano H.42: II. Lent et soutenu',
- # 'The Race Is On', 'Plus Que Ma Prope Vie', 'Symphony No. 3 in E-Flat Major, Op. 55 "Eroica": I. Allegro con brio',
- # 'One That Got Away', 'California', "Thinkin' Problem", 'Leave My Head Alone Brain Seven',
- # 'Fantasia on a Theme by Thomas Tallis', 'Only Questions']
+# Johnny,
+
+# We have a list of songs that we think you'll enjoy. Please let us know if you'd like us to play any of them.
+# ```Blessed Are the Bleak preview url: https://p.scdn.co/mp3-preview/a53ae8ca6445f18b769ffb086bb01dc2cc553fcf?cid=442602d418c546d78a8e65ce8b3c3d78
+# Little Black Train preview url: https://p.scdn.co/mp3-preview/751cd3ec2ee5cd64f14115f6378cc405a1d0d8f1?cid=442602d418c546d78a8e65ce8b3c3d78
+# Stellar Regions (Venus)
+# Like Someone In Love preview url: https://p.scdn.co/mp3-preview/1a39b5f372de737c38c211df597f1c982f0e565c?cid=442602d418c546d78a8e65ce8b3c3d78
+# I've Got You Under My Skin - Remastered 1998
+# I Let a Song Go out of My Heart preview url: https://p.scdn.co/mp3-preview/e6836a978b360ed127ecdaead051aada11189042?cid=442602d418c546d78a8e65ce8b3c3d78
+# My Girl
+# Cuando Cuando
+# Cantaloupe Island
+# You Make Me Feel so Young
