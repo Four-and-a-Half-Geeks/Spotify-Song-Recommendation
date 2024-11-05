@@ -33,6 +33,7 @@ def main():
         
         if recommendations:
             print("Track Recommendations:", recommendations)
+            print(sp.get_track_sample(recommendations[0]))
         else:
             print("No recommendations found.")
 
