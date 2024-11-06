@@ -17,7 +17,10 @@ class LLM:
     
     greet_template = PromptTemplate(
         input_variables=['user_name'],
-        template='Greet a user called: {user_name} in a friendly but professional way.'
+        template='''Greet a user called: {user_name} in a friendly but professional way.
+                                                Please limit your response to a single line of text.
+                                                In this context you are a web application that is going to recommend music to the user.
+                                                Make the response a little bit different every time.'''
     )
     
     song_template = PromptTemplate(
@@ -46,8 +49,8 @@ valence: '''
     
     custom_recommendation_template = PromptTemplate(
         input_variables=['user_name'],
-        template='''Provide a heading for a user named: {user_name} in a friendly but professional way, letting him know that we
-        have a list of songs to recommend him.
+        template='''The user's name is: {user_name}. Please let the user know, in a professional and friendly way, that you have a list of songs
+        that you would like to recommend to them. In this context you are a web application that is going to recommend music to the user. Please limit your response to a single line of text.
         
         '''
     )
@@ -100,10 +103,11 @@ valence: '''
     #Returns text greeting the user according to its username. Must call set_username({user's_name}) first
     def greet_user(self) -> str:
         model_response = self.prompt_llm( prompt = self.user_name, prompt_template = self.greet_template)
-        model_response = model_response.replace(f'''Provide a heading for a user named: {self.user_name} in a friendly but professional way, letting him know that we
-        have a list of songs to recommend him.
-        
-        ''')
+        #Remove any additional text from the model's response.
+        model_response = model_response.replace(f'''Greet a user called: {self.user_name} in a friendly but professional way.
+                                                Please limit your response to a single line of text.
+                                                In this context you are a web application that is going to recommend music to the user.
+                                                Make the response a little bit different every time.''', '')
         return model_response
     
     #Returns a pandas DataFrame containing the additional values needed for a custon Spotify API Recommendations call.
@@ -116,9 +120,10 @@ valence: '''
     def give_user_recommendations(self, song_names_list : list[str], song_previews : list[str] = None) -> str:
         
         model_output = self.prompt_llm( prompt=self.user_name, prompt_template=self.custom_recommendation_template)
+        response = model_output
         #Removes the instructions from the response
-        response = model_output.replace(f'''Provide a heading for a user named: {self.user_name} in a friendly but professional way, letting him know that we
-        have a list of songs to recommend him.
+        response = model_output.replace(f'''The user's name is: {self.user_name}. Please let the user know, in a professional and friendly way, that you have a list of songs
+        that you would like to recommend to them. In this context you are a web application that is going to recommend music to the user. Please limit your response to a single line of text.
         
         ''', '')
         i = 0

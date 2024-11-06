@@ -61,14 +61,14 @@ class SpotifyAPI:
                 seed_genres=genre_seeds,
                 limit=amount,
                 country=country,
-                target_acousticness=spotify_data.get('acousticness', 0.5),
-                target_danceability=spotify_data.get('danceability', 0.5),
-                target_duration_ms=int(210000),  # Replace with an integer
-                target_energy=spotify_data.get('energy', 0.5),
-                target_instrumentalness=spotify_data.get('instrumentalness', 0.0),
-                target_speechiness=spotify_data.get('speechiness', 0.5),
-                target_tempo=spotify_data.get('tempo', 120.0),
-                target_valence=spotify_data.get('valence', 0.5)
+                target_acousticness=spotify_data.get('acousticness', 0.5) if spotify_data else 0.5,
+                target_danceability=spotify_data.get('danceability', 0.5) if spotify_data else 0.5,
+                target_duration_ms=int(210000) if spotify_data else 210000,  # Replace with an integer
+                target_energy=spotify_data.get('energy', 0.5) if spotify_data else 0.5,
+                target_instrumentalness=spotify_data.get('instrumentalness', 0.0) if spotify_data else 0.0,
+                target_speechiness=spotify_data.get('speechiness', 0.5) if spotify_data else 0.5,
+                target_tempo=spotify_data.get('tempo', 120.0) if spotify_data else 120.0,
+                target_valence=spotify_data.get('valence', 0.5) if spotify_data else 0.5
             )
             return [track['name'] for track in recommendations['tracks']]
         except spotipy.SpotifyException as e:
@@ -84,12 +84,11 @@ class SpotifyAPI:
             
             # Extract the preview URL if available
             preview_url = track.get('preview_url')
-            #print('Preview url: ', preview_url)
             if preview_url:
-                #print(f"Preview URL for track {track_id}: {preview_url}")
+                print(f"Preview URL for track {track_id}: {preview_url}")
                 return preview_url
             else:
-                #print(f"No preview available for track {track_id}.")
+                print(f"No preview available for track {track_id}.")
                 return None
         except Exception as e:
             print(f"An error occurred: {e}")
