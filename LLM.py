@@ -99,7 +99,12 @@ valence: '''
     ########Pormpt functions##########
     #Returns text greeting the user according to its username. Must call set_username({user's_name}) first
     def greet_user(self) -> str:
-        return self.prompt_llm( prompt = self.user_name, prompt_template = self.greet_template)
+        model_response = self.prompt_llm( prompt = self.user_name, prompt_template = self.greet_template)
+        model_response = model_response.replace(f'''Provide a heading for a user named: {self.user_name} in a friendly but professional way, letting him know that we
+        have a list of songs to recommend him.
+        
+        ''')
+        return model_response
     
     #Returns a pandas DataFrame containing the additional values needed for a custon Spotify API Recommendations call.
     #The values are listed under the recommendation_template.
@@ -111,7 +116,11 @@ valence: '''
     def give_user_recommendations(self, song_names_list : list[str], song_previews : list[str] = None) -> str:
         
         model_output = self.prompt_llm( prompt=self.user_name, prompt_template=self.custom_recommendation_template)
-        response = model_output
+        #Removes the instructions from the response
+        response = model_output.replace(f'''Provide a heading for a user named: {self.user_name} in a friendly but professional way, letting him know that we
+        have a list of songs to recommend him.
+        
+        ''', '')
         i = 0
         for song_name in song_names_list:
             response += song_name
