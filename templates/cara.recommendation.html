@@ -22,28 +22,72 @@
 
         <!-- Music Genre Checkboxes -->
         <h2>Select Your Favorite Music Genres</h2>
+
         <label><input type="checkbox" name="genre" value="pop"> Pop</label><br>
-        <label><input type="checkbox" name="genre" value="country"> country</label><br>
-        <label><input type="checkbox" name="genre" value="jazz"> jazz</label><br>
-        <label><input type="checkbox" name="genre" value="rock"> rock</label><br>
-        <label><input type="checkbox" name="genre" value="hip hop"> hip hop</label><br>
-        <label><input type="checkbox" name="genre" value="classical"> classical</label><br>
+        <label><input type="checkbox" name="genre" value="country"> Country</label><br>
+        <label><input type="checkbox" name="genre" value="jazz"> Jazz</label><br>
+        <label><input type="checkbox" name="genre" value="rock"> Rock</label><br>
+        <label><input type="checkbox" name="genre" value="hip hop"> Hip Hop</label><br>
+        <label><input type="checkbox" name="genre" value="classical"> Classical</label><br>
         <label><input type="checkbox" name="genre" value="EDM"> EDM</label><br>
-        <label><input type="checkbox" name="genre" value="metal"> metal</label><br>
-        <label><input type="checkbox" name="genre" value="alternative"> alternative</label><br>
-        <label><input type="checkbox" name="genre" value="electronic"> electronic</label><br>
+        <label><input type="checkbox" name="genre" value="metal"> Metal</label><br>
+        <label><input type="checkbox" name="genre" value="alternative"> Alternative</label><br>
+        <label><input type="checkbox" name="genre" value="electronic"> Electronic</label><br>
         <label><input type="checkbox" name="genre" value="Rhythm and Blues"> Rhythm and Blues</label><br>
-        <label><input type="checkbox" name="genre" value="soul"> soul</label><br>
-        <label><input type="checkbox" name="genre" value="folk"> folk</label><br>
+        <label><input type="checkbox" name="genre" value="soul"> Soul</label><br>
+        <label><input type="checkbox" name="genre" value="folk"> Folk</label><br>
+        
+        <!-- New checkbox for "Other" -->
+        <label><input type="checkbox" id="otherCheckbox" onclick="toggleTextBox()"> Other</label><br>
+        
+        <!-- Text box that will appear when "Other" is checked -->
+        <input type="text" id="otherTextBox" placeholder="Enter custom genre" style="display:none;">
+        
+        <script>
+        function toggleTextBox() {
+            // Get the checkbox and text box elements
+            var checkBox = document.getElementById("otherCheckbox");
+            var textBox = document.getElementById("otherTextBox");
+            
+            // Toggle the text box display based on whether the checkbox is checked
+            if (checkBox.checked) {
+                textBox.style.display = "block";
+            } else {
+                textBox.style.display = "none";
+            }
+        }
+        </script>
 
         <!-- Music Feeling Checkboxes -->
         <h2>What kind of feeling do you want your music to have?</h2>
+
         <label><input type="checkbox" name="feeling" value="joy"> Joy</label><br>
-        <label><input type="checkbox" name="feeling" value="sadness"> sadness</label><br>
-        <label><input type="checkbox" name="feeling" value="calm"> calm</label><br>
-        <label><input type="checkbox" name="feeling" value="focus"> focus</label><br>
-        <label><input type="checkbox" name="feeling" value="anger"> anger</label><br>
-        <label><input type="checkbox" name="feeling" value="energy"> energy</label><br>
+        <label><input type="checkbox" name="feeling" value="sadness"> Sadness</label><br>
+        <label><input type="checkbox" name="feeling" value="calm"> Calm</label><br>
+        <label><input type="checkbox" name="feeling" value="focus"> Focus</label><br>
+        <label><input type="checkbox" name="feeling" value="anger"> Anger</label><br>
+        <label><input type="checkbox" name="feeling" value="energy"> Energy</label><br>
+        
+        <!-- New checkbox for "Other" -->
+        <label><input type="checkbox" id="otherFeelingCheckbox" onclick="toggleFeelingTextBox()"> Other</label><br>
+        
+        <!-- Text box that will appear when "Other" is checked -->
+        <input type="text" id="otherFeelingTextBox" placeholder="Enter custom feeling" style="display:none;">
+        
+        <script>
+        function toggleFeelingTextBox() {
+            // Get the checkbox and text box elements
+            var checkBox = document.getElementById("otherFeelingCheckbox");
+            var textBox = document.getElementById("otherFeelingTextBox");
+            
+            // Toggle the text box display based on whether the checkbox is checked
+            if (checkBox.checked) {
+                textBox.style.display = "block";
+            } else {
+                textBox.style.display = "none";
+            }
+        }
+        </script>
 
         <!-- Submit Button -->
         <input type="submit" value="Submit">
