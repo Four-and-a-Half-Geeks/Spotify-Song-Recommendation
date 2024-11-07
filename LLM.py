@@ -127,11 +127,11 @@ valence: '''
         ''', '')
         i = 0
         for song_name in song_names_list:
+            response += '\n'        
             response += song_name
             if song_previews and song_previews[i] != None:
                 response += ' preview url: ' + song_previews[i]
-            i += 1
-            response += '\n'
+            i += 1   
         
         return response
     

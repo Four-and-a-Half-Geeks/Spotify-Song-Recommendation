@@ -35,14 +35,14 @@ class SpotifyAPI:
                 return "Artist not found."
             
     def get_genre_seed(self, genre_name : str) -> str:
-        genre_seeds = self.sp.recommendation_genre_seeds()
+        genre_seeds = self.get_all_genre_seed()
         if genre_name in genre_seeds:
             return genre_name
         else:
             return 'Genre not found'
         
     #For autocompletion of the genre input field. May improve user experience
-    def get_all_genre_seed(self, genre_name : str) -> list:
+    def get_all_genre_seed(self) -> list:
         genre_seeds = self.sp.recommendation_genre_seeds()
         return genre_seeds['genres']
     
@@ -52,7 +52,9 @@ class SpotifyAPI:
             amount : int = '20', country : str = 'US', spotify_data : dict = None) -> list:
         if not (track_seeds or artist_seeds or genre_seeds):
             raise ValueError("At least one of seed_tracks, seed_artists, or seed_genres must be provided.")
-
+        #Debug spotify data
+        print('Spotify Data: ', spotify_data)
+        
         # Prepare the input parameters for the Spotify API
         try:
             recommendations = self.sp.recommendations(
@@ -63,7 +65,7 @@ class SpotifyAPI:
                 country=country,
                 target_acousticness=spotify_data.get('acousticness', 0.5) if spotify_data else 0.5,
                 target_danceability=spotify_data.get('danceability', 0.5) if spotify_data else 0.5,
-                target_duration_ms=int(210000) if spotify_data else 210000,  # Replace with an integer
+                target_duration_ms=int(210000) if spotify_data else 210000,  #Replace with an integer
                 target_energy=spotify_data.get('energy', 0.5) if spotify_data else 0.5,
                 target_instrumentalness=spotify_data.get('instrumentalness', 0.0) if spotify_data else 0.0,
                 target_speechiness=spotify_data.get('speechiness', 0.5) if spotify_data else 0.5,
@@ -85,10 +87,10 @@ class SpotifyAPI:
             # Extract the preview URL if available
             preview_url = track.get('preview_url')
             if preview_url:
-                print(f"Preview URL for track {track_id}: {preview_url}")
+                #print(f"Preview URL for track {track_id}: {preview_url}")
                 return preview_url
             else:
-                print(f"No preview available for track {track_id}.")
+                #print(f"No preview available for track {track_id}.")
                 return None
         except Exception as e:
             print(f"An error occurred: {e}")
