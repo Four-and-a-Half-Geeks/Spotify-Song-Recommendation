@@ -1,5 +1,4 @@
 
-from transformers import pipeline
 from langchain.llms import HuggingFaceHub
 import pandas as pd
 import re
