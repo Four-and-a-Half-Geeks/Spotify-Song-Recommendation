@@ -46,7 +46,12 @@
 </head>
 <body>
     <h3>Prediction Result</h3>
-    <p>The entered value is: <strong>{{ prediction }}</strong></p>
+    <p>The entered value is: <strong>{{ user_greeting }}</strong></p>
+    <p>What kind of music do you want?</p>
+    <form action="/recommendation_list" method="post">
+        Key: <input type="text" step="any" name="val2" required><br><br>
+        <input type="submit" value="Enter">
+    </form>
     <a href="/">Go Back</a>
 </body>
 </html>

@@ -1,0 +1,10 @@
+pandas
+numpy
+matplotlib
+spotipy
+langchain
+langchain_community
+transformers
+huggingface_hub
+ipywidgets
+torch
