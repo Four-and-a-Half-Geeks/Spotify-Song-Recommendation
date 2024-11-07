@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Preferences</title>
+    <style>
+        /* Your existing styles here */
+    </style>
+</head>
+<body>
+
+    <!-- Update the form to submit to Flask's "/recommendation" route -->
+    <form id="music-form" action="/recommendation" method="POST">
+        <!-- Username Input -->
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" placeholder="Enter your username" required>
+
+        <!-- API Key Input -->
+        <label for="api-key">API Key:</label>
+        <input type="text" id="api-key" name="api-key" placeholder="Enter your API key" required>
+
+        <!-- Music Genre Checkboxes -->
+        <h2>Select Your Favorite Music Genres</h2>
+        <label><input type="checkbox" name="genre" value="pop"> Pop</label><br>
+        <!-- Add remaining genres as needed -->
+
+        <!-- Music Feeling Checkboxes -->
+        <h2>What kind of feeling do you want your music to have?</h2>
+        <label><input type="checkbox" name="feeling" value="joy"> Joy</label><br>
+        <!-- Add remaining feelings as needed -->
+
+        <!-- Submit Button -->
+        <input type="submit" value="Submit">
+    </form>
+
+    <!-- Display the recommendation result here -->
+    <h3>Recommended Song</h3>
+    <div id="recommendation">
+        {% if prediction %}
+            <p><strong>Recommended Song:</strong> {{ prediction }}</p>
+        {% else %}
+            <p>Select your preferences and click "Submit" to see a recommendation.</p>
+        {% endif %}
+    </div>
+
+</body>
+</html>
