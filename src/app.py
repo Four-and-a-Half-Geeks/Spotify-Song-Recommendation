@@ -38,7 +38,7 @@ def index():
 @app.route("/recommendation", methods=["POST"])
 def recommendation():
     # Get the input value
-    val1 = str(request.form["val1"])
+    user_name = str(request.form["user_name"])
     user_greeting = "Welcome!"
 
     #def load_env():
@@ -60,32 +60,18 @@ def recommendation():
     #load_env()
     try:
         load_dotenv()
-        client_id = os.getenv('SPOTIFY_CLIENT_ID')
-        client_secret = os.getenv('SPOTIFY_CLIENT_SECRET')
+        
         huggingface_key = os.getenv('HUGGING_FACE_TOKEN')
 
-        if not client_id or not client_secret or not huggingface_key:
-            print("Error: Client ID and/or Client Secret not found.")
+        if not huggingface_key:
+            print("Error: Token not found.")
             return
-        sp = SpotifyAPI(client_id, client_secret)
         llm = LLM(huggingface_key)
-        user_name = val1
         llm.set_username(user_name=user_name)
         print(llm.greet_user())
         user_greeting = llm.greet_user()
-        user_input = 'Upbeat music to dance along'
-        spotify_data = llm.get_spotify_recommendation_data(user_input=user_input)
-        recommendations = sp.get_track_recommendations(genre_seeds=['jazz'], amount=10, spotify_data=spotify_data)
-        sample_list : list = []
-        for song_name in recommendations:
-            sample_list.append(sp.get_track_sample(song_name))
         
         #WARNING: When running the app, a lot of Langchain warnings appear in the chat. They are harmless.
-        if recommendations:
-            #print("Track Recommendations:", recommendations)
-            print(llm.give_user_recommendations(song_names_list = recommendations,song_previews= sample_list))
-        else:
-            print("No recommendations found.")
 
     except Exception as e:
         print("An error occurred:", e)
@@ -96,8 +82,8 @@ def recommendation():
 @app.route("/recommendation_list", methods=["POST"])
 def recommendation_list():
     try:
-        val2 = str(request.form["val2"])
-        recommendation_request = val2
+        recommendation_request = str(request.form["recommendation_request"])
+        genres = str(request.form["genres"]).lower().split(',')
 
         # Load environment variables and check for keys
         load_dotenv()
@@ -115,7 +101,7 @@ def recommendation_list():
 
         # Get Spotify data and recommendations
         spotify_data = llm.get_spotify_recommendation_data(user_input=recommendation_request)
-        recommendations = sp.get_track_recommendations(genre_seeds=['jazz'], amount=10, spotify_data=spotify_data)
+        recommendations = sp.get_track_recommendations(genre_seeds=genres, amount=10, spotify_data=spotify_data)
         sample_list = [sp.get_track_sample(song_name) for song_name in recommendations]
 
         # Generate a recommendation list as a single string
