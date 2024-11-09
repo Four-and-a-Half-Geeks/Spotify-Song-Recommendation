@@ -5,59 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Music Preferences</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        /* Spotify Mix-inspired styles */
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #121212;
-            color: #ffffff;
-            margin: 0;
-            padding: 20px;
-        }
-
-        h2 {
-            font-size: 2em;
-            font-weight: 700;
-            letter-spacing: -0.05em;
-            color: #1DB954; /* Spotify green color */
-            margin-bottom: 10px;
-        }
-
-        label {
-            font-size: 1.1em;
-            font-weight: 400;
-            color: #B3B3B3; /* Light gray for labels */
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 8px;
-            margin-top: 5px;
-            margin-bottom: 15px;
-            font-size: 1em;
-            color: #000;
-        }
-
-        input[type="checkbox"] {
-            margin-right: 8px;
-        }
-
-        input[type="submit"] {
-            background-color: #1DB954;
-            color: #ffffff;
-            font-weight: 700;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-size: 1em;
-        }
-
-        #recommendation p {
-            font-size: 1.1em;
-            font-weight: 700;
-            color: #1DB954;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
 
@@ -135,7 +83,6 @@
             }
         }
         </script>
-
         <input type="submit" value="Submit">
     </form>
 
@@ -149,5 +96,6 @@
         {% endif %}
     </div>
 
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
