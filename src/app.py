@@ -9,6 +9,7 @@ from nltk.stem import WordNetLemmatizer
 from SpotifyAPI import SpotifyAPI
 from LLM import LLM
 from dotenv import load_dotenv
+from SpotifyCarlos import SpotifyCarlos
 
 #os.environ["OPENAI_API_KEY"] = apikey
 
@@ -84,6 +85,7 @@ def recommendation_list():
     try:
         recommendation_request = str(request.form["recommendation_request"])
         genres = str(request.form["genres"]).lower().split(',')
+        genres = [genre.strip() for genre in genres]
 
         # Load environment variables and check for keys
         load_dotenv()
@@ -99,8 +101,25 @@ def recommendation_list():
         sp = SpotifyAPI(client_id, client_secret)
         llm = LLM(huggingface_key)
 
+        
+
         # Get Spotify data and recommendations
         spotify_data = llm.get_spotify_recommendation_data(user_input=recommendation_request)
+
+
+        #start of carlos code----------------------------------------------------
+        recommender = SpotifyCarlos(client_id, client_secret)
+        recommendationsCarlos = recommender.get_track_recommendations(genre_seeds=genres, spotify_data=spotify_data)
+        if recommendationsCarlos:
+            print("\nRecommended Songs:")
+            print(genres)
+            for idx, (track_name, artist_name) in enumerate(recommendationsCarlos, start=1):
+                print(f"{idx}. {track_name} by {artist_name} Carlossssss")
+        else:
+            print("No recommendations available. Try using different input options.")
+        #end of carlos code------------------------------------------------------
+
+        
         recommendations = sp.get_track_recommendations(genre_seeds=genres, amount=10, spotify_data=spotify_data)
         sample_list = [sp.get_track_sample(song_name) for song_name in recommendations]
 
