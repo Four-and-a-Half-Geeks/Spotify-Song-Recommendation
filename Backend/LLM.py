@@ -116,7 +116,7 @@ valence: '''
         return self.parse_model_output_to_dict(model_output=model_output)
     
     #Given a list of song names, this method returns a custom message for the user with his requested recommendations.
-    def give_user_recommendations(self, song_names_list : list[str], song_previews : list[str] = None) -> str:
+    def give_user_recommendations(self, songs_list : list[tuple], song_previews : list[str] = None) -> str:
         
         model_output = self.prompt_llm( prompt=self.user_name, prompt_template=self.custom_recommendation_template)
         response = model_output
@@ -125,10 +125,11 @@ valence: '''
         that you would like to recommend to them. In this context you are a web application that is going to recommend music to the user. Please limit your response to a single line of text.
         
         ''', '')
+        response += '\n'
         i = 0
-        for song_name in song_names_list:
+        for song_data in songs_list:
             response += '\n'        
-            response += song_name
+            response += song_data[0] + ' by ' + song_data[1]
             if song_previews and song_previews[i] != None:
                 response += ' preview url: ' + song_previews[i]
             i += 1   
