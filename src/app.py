@@ -109,12 +109,19 @@ def recommendation_list():
 
         #start of carlos code----------------------------------------------------
         recommender = SpotifyCarlos(client_id, client_secret)
-        recommendationsCarlos = recommender.get_track_recommendations(genre_seeds=genres, spotify_data=spotify_data)
-        if recommendationsCarlos:
+        recommendations_Carlos = recommender.get_track_recommendations(genre_seeds=genres, spotify_data=spotify_data)
+        sample_list_Carlos = [sp.get_track_sample(song_name) for song_name in recommendations_Carlos]
+        recommendations_Carlos_enumerated = [(idx + 1, track_name, artist_name) for idx, (track_name, artist_name) in enumerate(recommendations_Carlos)]
+        print(recommendations_Carlos_enumerated)
+        recommendations_Carlos_enumerated = [
+        (*rec, sample_list_Carlos[idx]) for idx, rec in enumerate(recommendations_Carlos_enumerated)
+        ]
+        print(recommendations_Carlos_enumerated)
+        if recommendations_Carlos:
             print("\nRecommended Songs:")
             print(genres)
-            for idx, (track_name, artist_name) in enumerate(recommendationsCarlos, start=1):
-                print(f"{idx}. {track_name} by {artist_name} Carlossssss")
+            for idx, (track_name, artist_name) in enumerate(recommendations_Carlos, start=1):
+                print(f"{idx}. {track_name} by {artist_name}")
         else:
             print("No recommendations available. Try using different input options.")
         #end of carlos code------------------------------------------------------
@@ -134,7 +141,7 @@ def recommendation_list():
     except Exception as e:
         print("An error occurred:", e)
     
-    return render_template("recommendation_list.html", recommendation_list=recommendation_list)
+    return render_template("recommendation_list.html", recommendation_list=recommendation_list, recommendations_Carlos = recommendations_Carlos_enumerated)
 
 
 if __name__ == "__main__":

@@ -29,6 +29,11 @@
             <li>{{ recommendation }}</li>
         {% endfor %}
     </ul>
+    <ul>
+        {% for idx, track_name, artist_name, sample_list in recommendations_Carlos %}
+            <li>{{idx}}. {{track_name}} by {{artist_name}} preview url {{sample_list}}</li>
+        {% endfor %}
+    </ul>
     <a href="/">Go Back</a>
 </body>
 </html>
