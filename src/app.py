@@ -203,3 +203,8 @@ if __name__ == "__main__":
 #     </script>
 # </body>
 # </html>
+
+#To play a preview from a Spotify preview_url, you can use the HTML <audio> element or JavaScript. Here’s how to set it up in a webpage: <audio controls>
+   #<source src="YOUR_PREVIEW_URL_HERE" type="audio/mpeg">
+    #Your browser does not support the audio element.
+#</audio>

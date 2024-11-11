@@ -31,7 +31,12 @@
     </ul>
     <ul>
         {% for idx, track_name, artist_name, sample_list in recommendations_Carlos %}
-            <li>{{idx}}. {{track_name}} by {{artist_name}} preview url {{sample_list}}</li>
+            <li>
+                {{idx}}. {{track_name}} by {{artist_name}}
+                {% if sample_list %}
+                    <a href={{sample_list}}>Preview</a>
+                {% endif %}
+            </li>
         {% endfor %}
     </ul>
     <a href="/">Go Back</a>
