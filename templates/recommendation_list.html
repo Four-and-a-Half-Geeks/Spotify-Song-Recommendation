@@ -30,6 +30,7 @@
         {% endfor %}
     </ul>
     <ul>
+        <h3>Hello {{user_name}}, I hope you're having a great day! I've compiled a list of songs that I believe you'd enjoy. Please take a look and let me know if you have any questions or if there's anything else I can help you with.</h3>
         {% for idx, track_name, artist_name, sample_list in recommendations_Carlos %}
             <li>
                 {{idx}}. {{track_name}} by {{artist_name}}

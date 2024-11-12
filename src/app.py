@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, session
 from pickle import load
 import regex as re
 import os
@@ -18,6 +18,7 @@ from SpotifyCarlos import SpotifyCarlos
 
 # Define the Flask app and set the template folder path
 app = Flask(__name__, template_folder='../templates')
+app.secret_key = '1'
 
 #class_dict = {
    # "1": "POSITIVE",
@@ -40,6 +41,7 @@ def index():
 def recommendation():
     # Get the input value
     user_name = str(request.form["user_name"])
+    session['user_name'] = user_name
     user_greeting = "Welcome!"
 
     #def load_env():
@@ -83,6 +85,7 @@ def recommendation():
 @app.route("/recommendation_list", methods=["POST"])
 def recommendation_list():
     try:
+        user_name = session.get('user_name', 'Guest')
         recommendation_request = str(request.form["recommendation_request"])
         genres = str(request.form["genres"]).lower().split(',')
         genres = [genre.strip() for genre in genres]
@@ -141,7 +144,7 @@ def recommendation_list():
     except Exception as e:
         print("An error occurred:", e)
     
-    return render_template("recommendation_list.html", recommendation_list=recommendation_list, recommendations_Carlos = recommendations_Carlos_enumerated)
+    return render_template("recommendation_list.html", recommendation_list=recommendation_list, recommendations_Carlos = recommendations_Carlos_enumerated, user_name = user_name)
 
 
 if __name__ == "__main__":
