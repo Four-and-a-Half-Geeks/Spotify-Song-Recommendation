@@ -4,8 +4,11 @@ matplotlib == 3.9.2
 spotipy == 2.24.0
 langchain == 0.3.5
 langchain_community == 0.3.3
+langchain_openai == 0.2.7
+openai == 1.54.4
 transformers == 4.46.1
 huggingface_hub == 0.26.2
 ipywidgets == 8.1.5
 torch == 2.5.1
 seaborn == 0.13.2
+
