@@ -8,3 +8,5 @@ transformers
 huggingface_hub
 ipywidgets
 torch
+flask
+nltk == 3.9.1

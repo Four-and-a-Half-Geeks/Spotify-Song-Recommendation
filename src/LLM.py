@@ -98,15 +98,7 @@ Please provide values for all fields above. Respond only with said values.
         
         model_output = self.prompt_llm( prompt_variable=self.user_name, prompt_template=self.custom_recommendation_template)
         response = model_output
-        combined_song_list = [(song[0], song[1], song_previews[i] if i < len(song_previews) else None) for i, song in enumerate(songs_list)]
-        #response += '\n'
-        #i = 0
-        #for song_data in songs_list:
-            #response += '\n'        
-            #response += song_data[0] + ' by ' + song_data[1]
-            #if song_previews and song_previews[i] != None:
-                #response += ' preview url: ' + song_previews[i]
-            #i += 1   
+        combined_song_list = [(song[0], song[1], song_previews[i] if i < len(song_previews) else None) for i, song in enumerate(songs_list)]  
         
         return response, combined_song_list
     

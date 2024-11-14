@@ -1,5 +1,5 @@
 from SpotifyRecommender import SpotifyRecommender
-from LLM_Jose import LLM
+from LLM import LLM
 
 class Backend:
     
@@ -25,6 +25,5 @@ class Backend:
                                                             mood=mood,
                                                             spotify_data=spotify_data)
         print('Recommendation: ', recommendations)
-        sample_list_Jose = [self.sp.get_track_sample(song_name) for song_name, _ in recommendations]
-        #print(sample_list_Jose)
-        return self.llm.give_user_recommendations(songs_list = recommendations, song_previews=sample_list_Jose)
+        sample_list = [self.sp.get_track_sample(song_name) for song_name, _ in recommendations]
+        return self.llm.give_user_recommendations(songs_list = recommendations, song_previews=sample_list)
