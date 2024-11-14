@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prediction Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f4f4f4;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 15px rgba(0,0,0,0.1);
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        input[type="submit"] {
+            background-color: #786;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #555;
+        }
+        h3 {
+            margin-top: 20px;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        p {
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <p><strong>{{ user_greeting }}</strong></p>
+    <p>What kind of music do you want?</p>
+    <form action="/recommendation_list" method="post">
+        Please describe the music you want: <input type="text" step="any" name="recommendation_request" required><br><br>
+        <input type="submit" value="Enter">
+        <h2>Select Your Favorite Music Genres</h2>
+
+        <label><input type="checkbox" name="genre" value="pop"> Pop</label><br>
+        <label><input type="checkbox" name="genre" value="country"> Country</label><br>
+        <label><input type="checkbox" name="genre" value="jazz"> Jazz</label><br>
+        <label><input type="checkbox" name="genre" value="rock"> Rock</label><br>
+        <label><input type="checkbox" name="genre" value="hip hop"> Hip Hop</label><br>
+        <label><input type="checkbox" name="genre" value="classical"> Classical</label><br>
+        <label><input type="checkbox" name="genre" value="EDM"> EDM</label><br>
+        <label><input type="checkbox" name="genre" value="metal"> Metal</label><br>
+        <label><input type="checkbox" name="genre" value="alternative"> Alternative</label><br>
+        <label><input type="checkbox" name="genre" value="electronic"> Electronic</label><br>
+        <label><input type="checkbox" name="genre" value="Rhythm and Blues"> Rhythm and Blues</label><br>
+        <label><input type="checkbox" name="genre" value="soul"> Soul</label><br>
+        <label><input type="checkbox" name="genre" value="folk"> Folk</label><br>
+        
+        <!-- New checkbox for "Other" -->
+        <label><input type="checkbox" id="otherCheckbox" onclick="toggleTextBox()"> Other</label><br>
+        
+        <!-- Text box that will appear when "Other" is checked -->
+        <input type="text" id="otherTextBox" placeholder="Enter custom genre" style="display:none;" name="genres">
+        
+        <script>
+        function toggleTextBox() {
+            // Get the checkbox and text box elements
+            var checkBox = document.getElementById("otherCheckbox");
+            var textBox = document.getElementById("otherTextBox");
+            
+            // Toggle the text box display based on whether the checkbox is checked
+            if (checkBox.checked) {
+                textBox.style.display = "block";
+            } else {
+                textBox.style.display = "none";
+            }
+        }
+        </script>
+    </form>
+    <a href="/">Go Back</a>
+</body>
+</html>

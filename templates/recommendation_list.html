@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recommendation List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f4f4f4;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: #fff;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <h3>{{greeting}}</h3>
+    <ul>
+        {% for song_name, artist_name, preview_url in list %}
+            <li>
+                {{ song_name }} by {{ artist_name }}
+                {% if preview_url %}
+                    - <a href="{{ preview_url }}" target="_blank">Listen to Preview</a>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="/">Go Back</a>
+</body>
+</html>
