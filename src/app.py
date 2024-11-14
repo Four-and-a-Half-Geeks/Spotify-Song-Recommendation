@@ -93,9 +93,16 @@ def recommendation_list():
         openai_key = session.get('openai_key', 'Guest')
         recommendation_request = str(request.form["recommendation_request"])
         genres = str(request.form["genres"]).lower().split(',')
+
+        #NEEDS AT LEAST GENRES OR ARTIST OR SONG SEEDS OR SPOTIFYRECOMMENDER.PY THROWS AN ERROR
+        
+        if genres == ['']:
+            genres = []
+            print("I'm in the if")
+        else:
+            print(genres)
+            genres = [genre.strip() for genre in genres]
         #genres = [genre.lower() for genre in request.form.getlist("genres")]
-        #print("--------------------------------------" + genres)
-        genres = [genre.strip() for genre in genres]
         artists = []
         songs = []
 
