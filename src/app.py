@@ -94,8 +94,20 @@ def recommendation_list():
         recommendation_request = str(request.form["recommendation_request"])
         genres = str(request.form["genres"]).lower().split(',')
 
-        #NEEDS AT LEAST GENRES OR ARTIST OR SONG SEEDS OR SPOTIFYRECOMMENDER.PY THROWS AN ERROR
+        print("here are the typed in genres")
+        print(genres)
         
+        selected_genres = request.form.getlist("genre")
+
+        print("here are the genres from the checkbox")
+        print(selected_genres)
+
+        genres.extend(selected_genres)
+        print("here are the combined genres")
+        print(genres)
+        
+        #NEEDS AT LEAST GENRES OR ARTIST OR SONG SEEDS OR SPOTIFYRECOMMENDER.PY THROWS AN ERROR
+
         if genres == ['']:
             genres = []
             print("I'm in the if")
