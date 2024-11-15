@@ -93,6 +93,14 @@ def recommendation_list():
         openai_key = session.get('openai_key', 'Guest')
         recommendation_request = str(request.form["recommendation_request"])
         genres = str(request.form["genres"]).lower().split(',')
+        artists = str(request.form["artist_names"]).lower().split(',')
+        songs = str(request.form["song_names"]).lower().split(',')
+
+        print("here are the artist names")
+        print(artists)
+
+        print("here are the songs")
+        print(songs)
 
         print("here are the typed in genres")
         print(genres)
@@ -114,9 +122,11 @@ def recommendation_list():
         else:
             print(genres)
             genres = [genre.strip() for genre in genres]
+            print("genres in else")
+            print(genres)
         #genres = [genre.lower() for genre in request.form.getlist("genres")]
-        artists = []
-        songs = []
+        #artists = []
+        #songs = []
 
         # Load environment variables and check for keys
         load_dotenv()
