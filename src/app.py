@@ -8,11 +8,6 @@ from nltk.stem import WordNetLemmatizer
 from dotenv import load_dotenv
 from Backend import Backend
 
-#os.environ["OPENAI_API_KEY"] = apikey
-
-#website link https://ml-web-app-using-flask-e8bg.onrender.com/
-
-
 # Define the Flask app and set the template folder path
 app = Flask(__name__, template_folder='../templates')
 app.secret_key = '1'
@@ -65,7 +60,15 @@ def recommendation_list():
         openai_key = session.get('openai_key', 'Guest')
         recommendation_request = str(request.form["recommendation_request"])
         genres = str(request.form["genres"]).lower().split(',')
+        artists = str(request.form["artist_names"]).lower().split(',')
+        songs = str(request.form["song_names"]).lower().split(',')
+        
+        print("here are the artist names")
+        print(artists)
 
+        print("here are the songs")
+        print(songs)
+        
         print("here are the typed in genres")
         print(genres)
         
@@ -86,9 +89,6 @@ def recommendation_list():
         else:
             print(genres)
             genres = [genre.strip() for genre in genres]
-        #genres = [genre.lower() for genre in request.form.getlist("genres")]
-        artists = []
-        songs = []
 
         # Load environment variables and check for keys
         load_dotenv()
@@ -102,7 +102,7 @@ def recommendation_list():
         spotify_data = backend.llm.get_spotify_recommendation_data(user_input=recommendation_request)
         
         greeting, recommendations = backend.get_user_recommendation(genres, artists, songs, None, spotify_data)
-
+        print('Recommendations: ', recommendations)
 
     except Exception as e:
         print("An error occurred:", e)
@@ -115,9 +115,3 @@ if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     # Set host to 0.0.0.0 to be accessible externally
     app.run(host="0.0.0.0", port=port, debug=True)
-
-
-#To play a preview from a Spotify preview_url, you can use the HTML <audio> element or JavaScript. Here’s how to set it up in a webpage: <audio controls>
-   #<source src="YOUR_PREVIEW_URL_HERE" type="audio/mpeg">
-    #Your browser does not support the audio element.
-#</audio>
