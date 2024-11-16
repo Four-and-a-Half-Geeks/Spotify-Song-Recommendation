@@ -20,6 +20,11 @@
             border-radius: 4px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
+        .play-btn {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -29,11 +34,38 @@
             <li>
                 {{ song_name }} by {{ artist_name }}
                 {% if preview_url %}
-                    - <a href="{{ preview_url }}" target="_blank">Listen to Preview</a>
+                    <!-- Play button only -->
+                    <img src="https://www.svgrepo.com/show/479265/play-button.svg" class="play-btn" onclick="playAudio('{{ preview_url }}')" alt="Play Button">
                 {% endif %}
             </li>
         {% endfor %}
     </ul>
     <a href="/">Go Back</a>
+
+    <script>
+        // Global variable to store the current audio
+        let currentAudio = null;
+
+        function playAudio(url) {
+            // If the same audio is clicked, pause it
+            if (currentAudio && currentAudio.src === url) {
+                if (currentAudio.paused) {
+                    currentAudio.play(); // Play the audio if it is paused
+                } else {
+                    currentAudio.pause(); // Pause the audio if it is playing
+                }
+            } else {
+                // Stop any currently playing audio
+                if (currentAudio) {
+                    currentAudio.pause(); // Pause the current audio
+                }
+                // Create a new audio object and play the new audio
+                currentAudio = new Audio(url);
+                currentAudio.play();
+            }
+        }
+    </script>
 </body>
 </html>
+
+
