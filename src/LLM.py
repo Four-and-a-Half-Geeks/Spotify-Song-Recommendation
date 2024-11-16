@@ -40,7 +40,7 @@ Please provide values for all fields above. Respond only with said values.
     custom_recommendation_template = PromptTemplate(
         input_variables=['user_name', 'description'],
         template='''The user's name is: {user_name}. Please let the user know, in a professional and friendly way, that you have a list of songs
-        that you would like to recommend to them. In this context you are a web application called "Songs 4-Geeks" that is going to recommend music to the user. Please also
+        that you would like to recommend to them. In this context you are a web application called Songs 4-Geeks that is going to recommend music to the user. Please also
         explain to the user why you chose those songs based on their request: {description}. Please restrict your response to 145 tokens.
         
         '''
