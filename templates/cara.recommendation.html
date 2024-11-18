@@ -4,25 +4,73 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Music Preferences</title>
-    <style>
-        /* Your existing styles here */
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <!--<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!--<style>
+        body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #121212;
+    color: #ffffff;
+    margin: 0;
+    padding: 20px;
+}
+
+h2 {
+    font-size: 2em;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    color: #1DB954;
+    margin-bottom: 10px;
+}
+
+label {
+    font-size: 1.1em;
+    font-weight: 400;
+    color: #B3B3B3;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    font-size: 1em;
+    color: #000;
+}
+
+input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+input[type="submit"] {
+    background-color: #1DB954;
+    color: #ffffff;
+    font-weight: 700;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+#recommendation p {
+    font-size: 1.1em;
+    font-weight: 700;
+    color: #1DB954;
+}
+    </style>-->
 </head>
 <body>
 
-    <!-- Update the form to submit to Flask's "/recommendation" route -->
     <form id="music-form" action="/recommendation" method="POST">
-        <!-- Username Input -->
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" placeholder="Enter your username" required>
 
-        <!-- API Key Input -->
         <label for="api-key">API Key:</label>
         <input type="text" id="api-key" name="api-key" placeholder="Enter your API key" required>
 
-        <!-- Music Genre Checkboxes -->
         <h2>Select Your Favorite Music Genres</h2>
-
+        <!-- Genre Checkboxes -->
         <label><input type="checkbox" name="genre" value="pop"> Pop</label><br>
         <label><input type="checkbox" name="genre" value="country"> Country</label><br>
         <label><input type="checkbox" name="genre" value="jazz"> Jazz</label><br>
@@ -36,30 +84,30 @@
         <label><input type="checkbox" name="genre" value="Rhythm and Blues"> Rhythm and Blues</label><br>
         <label><input type="checkbox" name="genre" value="soul"> Soul</label><br>
         <label><input type="checkbox" name="genre" value="folk"> Folk</label><br>
+         
+               <!-- New checkbox for "Other" -->
+               <label><input type="checkbox" id="otherCheckbox" onclick="toggleTextBox()"> Other</label><br>
         
-        <!-- New checkbox for "Other" -->
-        <label><input type="checkbox" id="otherCheckbox" onclick="toggleTextBox()"> Other</label><br>
-        
-        <!-- Text box that will appear when "Other" is checked -->
-        <input type="text" id="otherTextBox" placeholder="Enter custom genre" style="display:none;">
-        
-        <script>
-        function toggleTextBox() {
-            // Get the checkbox and text box elements
-            var checkBox = document.getElementById("otherCheckbox");
-            var textBox = document.getElementById("otherTextBox");
-            
-            // Toggle the text box display based on whether the checkbox is checked
-            if (checkBox.checked) {
-                textBox.style.display = "block";
-            } else {
-                textBox.style.display = "none";
-            }
-        }
-        </script>
+               <!-- Text box that will appear when "Other" is checked -->
+               <input type="text" id="otherTextBox" placeholder="Enter custom genre" style="display:none;">
+               
+               <script>
+               function toggleTextBox() {
+                   // Get the checkbox and text box elements
+                   var checkBox = document.getElementById("otherCheckbox");
+                   var textBox = document.getElementById("otherTextBox");
+                   
+                   // Toggle the text box display based on whether the checkbox is checked
+                   if (checkBox.checked) {
+                       textBox.style.display = "block";
+                   } else {
+                       textBox.style.display = "none";
+                   }
+               }
+               </script>
 
-        <!-- Music Feeling Checkboxes -->
         <h2>What kind of feeling do you want your music to have?</h2>
+        <!-- Feeling Checkboxes -->
 
         <label><input type="checkbox" name="feeling" value="joy"> Joy</label><br>
         <label><input type="checkbox" name="feeling" value="sadness"> Sadness</label><br>
@@ -88,12 +136,10 @@
             }
         }
         </script>
-
-        <!-- Submit Button -->
         <input type="submit" value="Submit">
     </form>
 
-    <!-- Display the recommendation result here -->
+    <!-- Recommendation display -->
     <h3>Recommended Song</h3>
     <div id="recommendation">
         {% if prediction %}
@@ -103,5 +149,6 @@
         {% endif %}
     </div>
 
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>

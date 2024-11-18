@@ -2,7 +2,8 @@
 <html>
 <head>
     <title>Spotify - Model prediction</title>
-    <style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!--<style>
         body {
             font-family: Arial, sans-serif;
             margin: 40px;
@@ -38,15 +39,16 @@
             padding: 10px;
             border-radius: 4px;
         }
-    </style>
+    </style>-->
 </head>
 <body>
-    <h2>Enter your Username</h2>
+    <h2>Songs 4Geeks</h2>
     
     <form action="/recommendation" method="post">
         Username: <input type="text" step="any" name="user_name" required><br><br>
         API Key: <input type="text" step="any" name="AI_APIKEY" required><br><br>
         <input type="submit" value="Enter">
     </form>
+    <!--<a href="/cara_recommendation">Cara</a>-->
 </body>
 </html>

@@ -19,7 +19,7 @@ from LLM_Jose import LLM
 
 
 # Define the Flask app and set the template folder path
-app = Flask(__name__, template_folder='../templates')
+app = Flask(__name__, template_folder='../templates', static_folder='../static')
 app.secret_key = '1'
 
 #class_dict = {
@@ -38,6 +38,10 @@ def index():
 
     # Render the template with the prediction result (or None if GET request)
     return render_template("index.html")
+
+@app.route("/cara_recommendation")
+def cara_recommendation():
+    return render_template("cara.recommendation.html")
 
 @app.route("/recommendation", methods=["POST"])
 def recommendation():
