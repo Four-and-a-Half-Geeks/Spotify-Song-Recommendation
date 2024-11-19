@@ -75,11 +75,15 @@ def recommendation_list():
     except Exception as e:
         print("An error occurred:", e)
     
+    print('!!!!!!user_name: ', user_name)
+    print('!!!!!!!!recommendations: ', recommendations)
+    print('!!!!!!!!greeting: ', greeting)
+    
     return render_template("recommendation_list.html", user_name = user_name, list = recommendations, greeting = greeting)
 
 
 if __name__ == "__main__":
     # Use the port provided by Render, or default to 5000
-    port = int(os.environ.get("PORT", 5000))
+    port = int(os.environ.get("PORT", 8080))
     # Set host to 0.0.0.0 to be accessible externally
     app.run(host="0.0.0.0", port=port, debug=True)
