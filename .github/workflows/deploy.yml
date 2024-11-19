@@ -27,16 +27,14 @@ jobs:
         docker build --platform=linux/amd64 -t docker.io/jason202/songs4geeks:latest .
         docker push docker.io/jason202/songs4geeks:latest
 
-    # Step 4: Install Render CLI and add to PATH
-    - name: Install Render CLI
+    # Step 4: Manually install Render CLI and add to PATH
+    - name: Manually install Render CLI
       run: |
-        curl -fsSL https://cli.render.com/install | sh
-        echo "$HOME/.local/bin" >> $GITHUB_PATH  # Ensure the Render CLI is added to the PATH
-        # Add Render CLI to the PATH for the current step
-        echo "$HOME/.local/bin" >> $BASH_ENV
-
-    - name: Check Render CLI Version
-      run: render --version
+        wget https://cli.render.com/releases/render-cli-linux-x86_64 -O render-cli
+        chmod +x render-cli
+        mv render-cli ~/.local/bin/
+        echo "$HOME/.local/bin" >> $GITHUB_PATH  # Add to PATH for the current job
+        echo "export PATH=$HOME/.local/bin:$PATH" >> $BASH_ENV  # Append to $BASH_ENV for future steps
 
     # Step 5: Authenticate with Render CLI
     - name: Log in to Render CLI
