@@ -1,5 +1,4 @@
 
-import pandas as pd
 from langchain.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI
 from langchain.prompts import PromptTemplate
@@ -35,6 +34,16 @@ These are the parameters needed for the Spotify Recommendations API. Some key pa
 According to the user's description of the music they would like to listen to: {description}. 
 Please provide values for all fields above. Respond only with said values.
 '''
+    )
+    
+    recommend_podcast_template = PromptTemplate(
+        input_variables=['description'],
+        template=''' In this context you are "Songs 4Geeks", a music recommendation app which can also recommend podcasts.
+        According to this description: {description}.Please recommend a podcast that matches said description to the user.
+        Please restrict your response to 145 tokens. Please do not greet the user. Please respond only with a list of podcast
+        names. Please make sure the podcast exists on Spotify.
+        
+        '''
     )
     
     custom_recommendation_template = PromptTemplate(
@@ -107,10 +116,14 @@ Please provide values for all fields above. Respond only with said values.
     
     #Returns a pandas DataFrame containing the additional values needed for a custon Spotify API Recommendations call.
     #The values are listed under the recommendation_template.
-    def get_spotify_recommendation_data(self, user_input : str) -> pd.DataFrame:
+    def get_spotify_recommendation_data(self, user_input : str) -> dict:
         self.user_request_prediction = user_input
         model_output = self.prompt_llm( prompt_variable=self.user_request_prediction, prompt_template=self.spotify_data_template)
         return self.parse_model_output_to_dict(model_output=model_output)
+    
+    def get_spotify_podcast_list(self, user_input : str) -> dict:
+        model_output = self.prompt_llm( prompt_variable=user_input, prompt_template=self.recommend_podcast_template)
+        return model_output
     
     #Given a list of song names, this method returns a custom message for the user with his requested recommendations.
     def give_user_recommendations(self, songs_list : list[tuple], song_previews : list[str] = None) -> str:

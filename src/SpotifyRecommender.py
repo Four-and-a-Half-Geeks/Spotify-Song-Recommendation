@@ -116,3 +116,16 @@ class SpotifyRecommender:
         except SpotifyException as e:
             print(f"Error: {e}")
             return None
+        
+    def get_podcast_information(self, podcast_name : str) -> dict:
+        results = self.sp.search(q=podcast_name, type="show", limit=1)
+        if results['shows']['items']:
+            podcast = results['shows']['items'][0]
+            return {
+                "name": podcast['name'],
+                "id": podcast['id'],
+                "description": podcast['description'],
+                "external_url": podcast['external_urls']['spotify']
+            }
+        else:
+            return None

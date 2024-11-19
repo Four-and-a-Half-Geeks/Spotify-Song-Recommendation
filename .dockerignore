@@ -1,0 +1,18 @@
+# Ignore node_modules
+Backend/
+
+# Ignore Python virtual environment
+/spotify_llm_env
+
+# Ignore all `.log` files
+*.log
+*.env
+
+# Ignore compiled Python files
+src/__pycache__/
+*.pyc
+*.pyo
+*.chache
+
+# Ignore .git folder
+.git/

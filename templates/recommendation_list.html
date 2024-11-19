@@ -3,44 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>Recommendation List</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-            background-color: #f4f4f4;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        li {
-            background-color: #fff;
-            margin: 10px 0;
-            padding: 10px;
-            border-radius: 4px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-        .play-btn {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h3>{{greeting}}</h3>
+    <div class="greeting-container">
+        <h3>{{greeting}}</h3>
+    </div>
+    <h2>Song Recommendations</h2>
     <ul>
         {% for song_name, artist_name, preview_url in list %}
             <li>
-                {{ song_name }} by {{ artist_name }}
+                - {{ song_name }} by {{ artist_name }}
                 {% if preview_url %}
                     <!-- Play button only -->
-                    <img src="https://www.svgrepo.com/show/479265/play-button.svg" class="play-btn" onclick="playAudio('{{ preview_url }}')" alt="Play Button">
+                    <!--<img class="play-btn" onclick="playAudio('{{ preview_url }}')" alt="Play Button">-->
+                    <svg onclick="playAudio('{{ preview_url }}')" alt="Play Button" class="play-btn" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fill="#ffffff" fill-rule="evenodd" clip-rule="evenodd"> <path d="M7.421 4.356A1.25 1.25 0 005.5 5.411v5.178a1.25 1.25 0 001.921 1.055l4.069-2.59a1.25 1.25 0 000-2.109L7.42 4.356zM10.353 8L7 10.134V5.866L10.353 8z"></path> <path d="M8 0a8 8 0 100 16A8 8 0 008 0zM1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0z"></path> </g> </g></svg>
                 {% endif %}
             </li>
         {% endfor %}
     </ul>
-    <a href="/">Go Back</a>
+    <br>
+    <a href="/">
+        <button>Front Page</button>
+    </a>
 
     <script>
         // Global variable to store the current audio
@@ -67,5 +52,3 @@
     </script>
 </body>
 </html>
-
-
