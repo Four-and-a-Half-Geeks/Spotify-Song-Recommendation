@@ -24,8 +24,8 @@ jobs:
     # Step 3: Build and push Docker image
     - name: Build and Push Docker Image
       run: |
-        docker build --platform=linux/amd64 -t docker.io/songs4geeks:latest .
-        docker push docker.io/songs4geeks:latest
+        docker build --platform=linux/amd64 -t docker.io/jason202/songs4geeks:latest .
+        docker push docker.io/jason202/songs4geeks:latest
 
     # Step 4: Set up Render CLI
     - name: Install Render CLI
@@ -38,7 +38,7 @@ jobs:
 
     # Step 6: Trigger deploy with Render CLI
     - name: Deploy to Render
-      run: render deploy Songs4Geeks --image docker.io/songs4geeks:latest
+      run: render deploy Songs4Geeks --image docker.io/jason202/songs4geeks:latest
 
     # Step 7: Set up environment variables for the app
     - name: Set up environment variables
