@@ -33,8 +33,3 @@ jobs:
         service-id: ${{ secrets.RENDER_SERVICE_ID }}
         api-key: ${{ secrets.RENDER_API_KEY }}
         wait-for-success: true
-
-    # Step 7: Set up environment variables for the app
-    - name: Set up environment variables
-      run: |
-        render env add Songs4Geeks SPOTIFY_CLIENT_ID=${{ secrets.SPOTIFY_CLIENT_ID }} SPOTIFY_CLIENT_SECRET=${{ secrets.SPOTIFY_CLIENT_SECRET }}
