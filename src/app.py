@@ -75,10 +75,6 @@ def recommendation_list():
     except Exception as e:
         print("An error occurred:", e)
     
-    print('!!!!!!user_name: ', user_name)
-    print('!!!!!!!!recommendations: ', recommendations)
-    print('!!!!!!!!greeting: ', greeting)
-    
     return render_template("recommendation_list.html", user_name = user_name, list = recommendations, greeting = greeting)
 
 
