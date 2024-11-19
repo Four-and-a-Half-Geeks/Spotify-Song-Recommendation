@@ -7,7 +7,7 @@ Backend/
 # Ignore all `.log` files
 *.log
 *.env
-
+.github
 # Ignore compiled Python files
 src/__pycache__/
 *.pyc

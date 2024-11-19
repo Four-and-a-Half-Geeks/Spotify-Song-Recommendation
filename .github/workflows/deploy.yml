@@ -1,0 +1,48 @@
+name: Deploy to Render
+
+on:
+  push:
+    branches:
+      - deployment  # Specify the branch you want to monitor for changes
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout the code
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    # Step 2: Log in to Docker registry
+    - name: Log in to Docker
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    # Step 3: Build and push Docker image
+    - name: Build and Push Docker Image
+      run: |
+        docker build --platform=linux/amd64 -t docker.io/songs4geeks:latest .
+        docker push docker.io/songs4geeks:latest
+
+    # Step 4: Set up Render CLI
+    - name: Install Render CLI
+      run: |
+        curl -fsSL https://cli.render.com/install | sh
+
+    # Step 5: Authenticate with Render CLI
+    - name: Log in to Render CLI
+      run: render login --token ${{ secrets.RENDER_API_KEY }}
+
+    # Step 6: Trigger deploy with Render CLI
+    - name: Deploy to Render
+      run: render deploy Songs4Geeks --image docker.io/songs4geeks:latest
+
+    # Step 7: Set up environment variables for the app
+    - name: Set up environment variables
+      run: |
+        render env add Songs4Geeks SPOTIFY_CLIENT_ID=${{ secrets.SPOTIFY_CLIENT_ID }} SPOTIFY_CLIENT_SECRET=${{ secrets.SPOTIFY_CLIENT_SECRET }}
+
+
