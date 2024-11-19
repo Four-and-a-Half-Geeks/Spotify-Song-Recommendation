@@ -27,10 +27,11 @@ jobs:
         docker build --platform=linux/amd64 -t docker.io/jason202/songs4geeks:latest .
         docker push docker.io/jason202/songs4geeks:latest
 
-    # Step 4: Set up Render CLI
+    # Step 4: Install Render CLI
     - name: Install Render CLI
       run: |
         curl -fsSL https://cli.render.com/install | sh
+        echo "$HOME/.local/bin" >> $GITHUB_PATH  # Ensure the Render CLI is added to the PATH
 
     # Step 5: Authenticate with Render CLI
     - name: Log in to Render CLI
@@ -44,5 +45,4 @@ jobs:
     - name: Set up environment variables
       run: |
         render env add Songs4Geeks SPOTIFY_CLIENT_ID=${{ secrets.SPOTIFY_CLIENT_ID }} SPOTIFY_CLIENT_SECRET=${{ secrets.SPOTIFY_CLIENT_SECRET }}
-
 
