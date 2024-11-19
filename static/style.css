@@ -1,0 +1,112 @@
+/* static/css/style.css */
+
+/* Spotify Mix-inspired styles */
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #121212;
+    color: #ffffff;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h2 {
+    font-size: 2em;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    color: #1DB954;
+    margin-bottom: 10px;
+}
+
+label {
+    font-size: 1.1em;
+    font-weight: 400;
+    color: #B3B3B3;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    font-size: 1em;
+    color: #000;
+}
+.description{
+    width: 100%;
+    height: 100px;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    font-size: 1em;
+    color: #000;
+    text-align: left;
+    line-height: 1em;
+    vertical-align: top;
+    font-family: 'Montserrat', sans-serif;
+}
+input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    font-size: 1em;
+    color: #000;
+}
+
+.API-link{
+    color: white;
+    text-decoration: underline;
+    text-decoration-color: white;
+}
+
+input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+input[type="submit"] {
+    background-color: #1DB954;
+    color: #ffffff;
+    font-weight: 700;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+button{
+    background-color: #1DB954;
+    color: #ffffff;
+    font-weight: 700;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+li{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+#recommendation p {
+    font-size: 1.1em;
+    font-weight: 700;
+    color: #1DB954;
+}
+
+.greeting-container{
+    display: flex;
+    width: 50%;
+}
+
+.play-btn {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    margin-left: 10px;
+}

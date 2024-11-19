@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recommendation List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="greeting-container">
+        <h3>{{greeting}}</h3>
+    </div>
+    <h2>Song Recommendations</h2>
+    <ul>
+        {% for song_name, artist_name, preview_url in list %}
+            <li>
+                - {{ song_name }} by {{ artist_name }}
+                {% if preview_url %}
+                    <!-- Play button only -->
+                    <!--<img class="play-btn" onclick="playAudio('{{ preview_url }}')" alt="Play Button">-->
+                    <svg onclick="playAudio('{{ preview_url }}')" alt="Play Button" class="play-btn" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fill="#ffffff" fill-rule="evenodd" clip-rule="evenodd"> <path d="M7.421 4.356A1.25 1.25 0 005.5 5.411v5.178a1.25 1.25 0 001.921 1.055l4.069-2.59a1.25 1.25 0 000-2.109L7.42 4.356zM10.353 8L7 10.134V5.866L10.353 8z"></path> <path d="M8 0a8 8 0 100 16A8 8 0 008 0zM1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0z"></path> </g> </g></svg>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+    <br>
+    <a href="/">
+        <button>Front Page</button>
+    </a>
+
+    <script>
+        // Global variable to store the current audio
+        let currentAudio = null;
+
+        function playAudio(url) {
+            // If the same audio is clicked, pause it
+            if (currentAudio && currentAudio.src === url) {
+                if (currentAudio.paused) {
+                    currentAudio.play(); // Play the audio if it is paused
+                } else {
+                    currentAudio.pause(); // Pause the audio if it is playing
+                }
+            } else {
+                // Stop any currently playing audio
+                if (currentAudio) {
+                    currentAudio.pause(); // Pause the current audio
+                }
+                // Create a new audio object and play the new audio
+                currentAudio = new Audio(url);
+                currentAudio.play();
+            }
+        }
+    </script>
+</body>
+</html>
