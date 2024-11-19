@@ -46,13 +46,11 @@
     </style>-->
 </head>
 <body>
-    <p><strong>{{ user_greeting }}</strong></p>
-    <p>What kind of music do you want?</p>
+    <h3><strong>{{ user_greeting }}</strong></h3>
     <form action="/recommendation_list" method="post">
-        Please describe the music you want: <input type="text" step="any" name="recommendation_request" required><br><br>
+        Please describe the music you want: <textarea class="description" type="textarea" step="any" name="recommendation_request" required></textarea><br><br>
         Please add artists whose music you like: <input type="text" step="any" name="artist_names"><br><br>
-        Please add names of songs you like: <input type="text" step="any" name="song_names"><br><br>
-        <input type="submit" value="Enter">
+        Please add names of songs you like: <input type="text" step="any" name="song_names"><br>
         <h2>Select Your Favorite Music Genres</h2>
 
         <label><input type="checkbox" name="genre" value="pop"> Pop</label><br>
@@ -89,7 +87,12 @@
             }
         }
         </script>
+        <br>
+        <input type="submit" value="Enter"><br><br>
+        <a href="/">
+            <button>Front Page</button>
+        </a>
     </form>
-    <a href="/">Go Back</a>
+    
 </body>
 </html>

@@ -1,5 +1,5 @@
 from SpotifyRecommender import SpotifyRecommender
-from LLM_Jose import LLM
+from LLM import LLM
 
 class Backend:
     
@@ -15,15 +15,28 @@ class Backend:
         return self.llm.greet_user()
     
     def get_user_recommendation(self, genres : list[str], artists : list[str], songs : list[str], mood : str, spotify_data) -> str:
+        
+        #The recommendation cannot contain more than 5 of genres, songs, artists
+        if (len(genres) + len(songs) + len(artists)) > 5:
+            while len(genres) > 3 and (len(genres) + len(songs) + len(artists)) > 5:
+                print('Genre length: ', len(genres))
+                genres.pop()
+            while len(songs) > 2 and (len(genres) + len(songs) + len(artists)) > 5:
+                print('Genre length: ', len(songs))
+                songs.pop()
+            while len(artists) > 1 and (len(genres) + len(songs) + len(artists)) > 5:
+                print('Genre length: ', len(artists))
+                artists.pop()
+        
         genre_seeds = genres
         artist_seeds = [self.sp.search_artist_id(artist) for artist in artists if self.sp.search_artist_id(artist)]
         track_seeds = [self.sp.search_track_id(song) for song in songs if self.sp.search_track_id(song)]
+
         recommendations = self.sp.get_track_recommendations(track_seeds=track_seeds, 
                                                             artist_seeds=artist_seeds, 
                                                             genre_seeds=genre_seeds, 
                                                             mood=mood,
                                                             spotify_data=spotify_data)
-        #print('Recommendation: ', recommendations)
-        sample_list_Jose = [self.sp.get_track_sample(song_name) for song_name, _ in recommendations]
-        #print(sample_list_Jose)
-        return self.llm.give_user_recommendations(songs_list = recommendations, song_previews=sample_list_Jose)
+        print('Recommendation: ', recommendations)
+        sample_list = [self.sp.get_track_sample(song_name) for song_name, _ in recommendations]
+        return self.llm.give_user_recommendations(songs_list = recommendations, song_previews=sample_list)

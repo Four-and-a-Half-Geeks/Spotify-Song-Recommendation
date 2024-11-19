@@ -4,7 +4,6 @@ from spotipy.exceptions import SpotifyException
 
 class SpotifyRecommender:
     
-    
     sp : spotipy.Spotify
     
     
@@ -88,7 +87,9 @@ class SpotifyRecommender:
         }
         
         # Apply mood-based filtering if valid mood is provided
-        if mood and mood.lower() in mood_map:
+        if spotify_data:
+            pass
+        elif mood and mood.lower() in mood_map:
             spotify_data.update(mood_map[mood.lower()])
         elif mood:
             print(f"Invalid mood '{mood}' provided. Skipping mood-based filtering.")
@@ -101,15 +102,14 @@ class SpotifyRecommender:
                 seed_genres=genre_seeds,
                 limit=amount,
                 country=country,
-                spotify_data = spotify_data
-                #target_acousticness=spotify_data.get('acousticness', 0.5),
-                #target_danceability=spotify_data.get('danceability', 0.5),
-                #target_duration_ms=int(spotify_data.get('duration_ms', 210000)),
-                #target_energy=spotify_data.get('energy', 0.5),
-                #target_instrumentalness=spotify_data.get('instrumentalness', 0.0),
-                #target_speechiness=spotify_data.get('speechiness', 0.5),
-                #target_tempo=spotify_data.get('tempo', 120.0),
-                #target_valence=spotify_data.get('valence', 0.5)
+                target_acousticness=spotify_data.get('acousticness', 0.5),
+                target_danceability=spotify_data.get('danceability', 0.5),
+                target_energy=spotify_data.get('energy', 0.5),
+                target_instrumentalness=spotify_data.get('instrumentalness', 0.0),
+                target_speechiness=spotify_data.get('speechiness', 0.5),
+                target_tempo=spotify_data.get('tempo', 120.0),
+                target_valence=spotify_data.get('valence', 0.5),
+                target_liveness = spotify_data.get('liveness', 0.5)
             )
             # Return only track names as per requirements
             return [(track['name'], track['artists'][0]['name']) for track in recommendations['tracks']]

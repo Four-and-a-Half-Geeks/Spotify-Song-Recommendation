@@ -8,6 +8,7 @@ class LLM:
     
     openai_api_token : str
     user_name : str = 'User'
+    user_request_prediction : str = ''
     
     #Templates
     #Example song description : 'Upbeat music to dance along'
@@ -37,9 +38,10 @@ Please provide values for all fields above. Respond only with said values.
     )
     
     custom_recommendation_template = PromptTemplate(
-        input_variables=['user_name'],
+        input_variables=['user_name', 'description'],
         template='''The user's name is: {user_name}. Please let the user know, in a professional and friendly way, that you have a list of songs
-        that you would like to recommend to them. In this context you are a web application that is going to recommend music to the user. Please limit your response to a single line of text.
+        that you would like to recommend to them. In this context you are a web application called Songs 4-Geeks that is going to recommend music to the user. Please also
+        explain to the user why you chose those songs based on their request: {description}. Please restrict your response to 145 tokens.
         
         '''
     )
@@ -52,16 +54,32 @@ Please provide values for all fields above. Respond only with said values.
         self.user_name = user_name
     
 #Used by all prompt methods (greet_user, get_spotify_recommendation_data, give_user_recommendations)
-    def prompt_llm(self, prompt_variable : str, prompt_template : PromptTemplate = None) -> str:
+    def prompt_llm(self, prompt_variable, prompt_template: PromptTemplate) -> str:
+        # Initialize the LLM
         llm = ChatOpenAI(model_name="gpt-4", temperature=0.7, max_tokens=150, api_key=self.openai_api_token)
+        
+        # Create the chain using the prompt template
         chain = prompt_template | llm
-        input_variable_name = prompt_template.input_variables[0]
-        if prompt_template:
-            response = chain.invoke({input_variable_name: prompt_variable})
+
+        # Handle `prompt_variables` as str or list of strings
+        if isinstance(prompt_variable, str):
+            # If `prompt_variable` is a string, assume it corresponds to the first input variable
+            response = chain.invoke({prompt_template.input_variables[0]: prompt_variable})
+        elif isinstance(prompt_variable, list) and all(isinstance(item, str) for item in prompt_variable):
+            # If `prompt_variable` is a list of strings, map them to `input_variables`
+            if len(prompt_template.input_variables) != len(prompt_variable):
+                raise ValueError("Number of prompt variables does not match the number of input variables in the template.")
+            # Create a dictionary matching input_variables with the list values
+            input_dict = dict(zip(prompt_template.input_variables, prompt_variable))
+            print('Input variables: ', input_dict)
+            response = chain.invoke(input_dict)
         else:
-            response = llm(prompt_variable)
-        #If the response is of type AIMessage, return only the content
+            # Raise an error for unsupported `prompt_variables` types
+            raise TypeError("`prompt_variables` must be a str or a list of strings.")
+        
+        # Return the content if the response is of type AIMessage, otherwise return the response directly
         return response.content if hasattr(response, 'content') else response
+
 
 #Parses the LLMs response into a dictionary of values
     def parse_model_output_to_dict(self, model_output) -> dict:
@@ -90,23 +108,16 @@ Please provide values for all fields above. Respond only with said values.
     #Returns a pandas DataFrame containing the additional values needed for a custon Spotify API Recommendations call.
     #The values are listed under the recommendation_template.
     def get_spotify_recommendation_data(self, user_input : str) -> pd.DataFrame:
-        model_output = self.prompt_llm( prompt_variable=user_input, prompt_template=self.spotify_data_template)
+        self.user_request_prediction = user_input
+        model_output = self.prompt_llm( prompt_variable=self.user_request_prediction, prompt_template=self.spotify_data_template)
         return self.parse_model_output_to_dict(model_output=model_output)
     
     #Given a list of song names, this method returns a custom message for the user with his requested recommendations.
     def give_user_recommendations(self, songs_list : list[tuple], song_previews : list[str] = None) -> str:
         
-        model_output = self.prompt_llm( prompt_variable=self.user_name, prompt_template=self.custom_recommendation_template)
+        model_output = self.prompt_llm( prompt_variable=[self.user_request_prediction, self.user_name], prompt_template=self.custom_recommendation_template)
         response = model_output
-        combined_song_list = [(song[0], song[1], song_previews[i] if i < len(song_previews) else None) for i, song in enumerate(songs_list)]
-        #response += '\n'
-        #i = 0
-        #for song_data in songs_list:
-            #response += '\n'        
-            #response += song_data[0] + ' by ' + song_data[1]
-            #if song_previews and song_previews[i] != None:
-                #response += ' preview url: ' + song_previews[i]
-            #i += 1   
+        combined_song_list = [(song[0], song[1], song_previews[i] if i < len(song_previews) else None) for i, song in enumerate(songs_list)]  
         
         return response, combined_song_list
     
