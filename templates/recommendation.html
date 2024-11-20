@@ -46,7 +46,10 @@
     </style>-->
 </head>
 <body>
-    <h3><strong>{{ user_greeting }}</strong></h3>
+    <div class="small-logo-container">
+        <img class="small-logo" src="{{ url_for('static', filename='1000015449.jpg') }}" alt="Description of Image">
+    </div>
+    <h3 class="recommendation-greeting"><strong>{{ user_greeting }}</strong></h3>
     <form action="/recommendation_list" method="post">
         Please describe the music you want: <textarea class="description" type="textarea" step="any" name="recommendation_request" required></textarea><br><br>
         Please add artists whose music you like: <input type="text" step="any" name="artist_names"><br><br>

@@ -60,19 +60,6 @@ class SpotifyRecommender:
         available_genres = self.get_available_genres()
         genre_seeds = [genre.lower() for genre in genre_seeds if genre.lower() in available_genres]
         
-        # Set default Spotify audio feature values
-        #spotify_data = {
-            #'acousticness': 0.5,
-            #'danceability': 0.5,
-            #'duration_ms': 210000,
-            #'energy': 0.5,
-            #'instrumentalness': 0.0,
-            #'speechiness': 0.5,
-            #'tempo': 120.0,
-            #'valence': 0.5
-        #}
-        
-        # Define mood parameters
         mood_map = {
             'happy': {'valence': 0.8, 'danceability': 0.7},
             'sad': {'valence': 0.2, 'acousticness': 0.7},
@@ -93,6 +80,7 @@ class SpotifyRecommender:
             spotify_data.update(mood_map[mood.lower()])
         elif mood:
             print(f"Invalid mood '{mood}' provided. Skipping mood-based filtering.")
+        else: spotify_data = {}
 
         # Prepare the input parameters for the Spotify API
         try:

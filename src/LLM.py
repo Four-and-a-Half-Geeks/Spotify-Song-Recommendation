@@ -23,16 +23,28 @@ class LLM:
         input_variables=['description'],
         template='''
 These are the parameters needed for the Spotify Recommendations API. Some key parameters include:
-    acousticness: A measure of whether the track is acoustic.
-    danceability: How suitable the track is for dancing, based on tempo, rhythm stability, etc.
-    energy: A measure of intensity and activity (e.g., fast, loud, or agitated music).
-    instrumentalness: The likelihood that the track is instrumental.
-    liveness: A measure of the presence of a live audience.
-    valence: A measure of the musical positiveness conveyed by the track (e.g., happy vs. sad).
-    tempo: The tempo of the track in beats per minute.
-    speechiness: A measure of the presence of spoken words.
+    acousticness: A measure of whether the track is acoustic (value range: 0.0 - 1.0).
+    danceability: How suitable the track is for dancing, based on tempo, rhythm stability, etc. (value range: 0.0 - 1.0).
+    energy: A measure of intensity and activity (value range: 0.0 - 1.0).
+    instrumentalness: The likelihood that the track is instrumental (value range: 0.0 - 1.0).
+    liveness: A measure of the presence of a live audience (value range: 0.0 - 1.0).
+    valence: A measure of the musical positiveness conveyed by the track (value range: 0.0 - 1.0).
+    tempo: The tempo of the track in beats per minute (integer, typical range: 60-200 BPM).
+    speechiness: A measure of the presence of spoken words (value range: 0.0 - 1.0).
+
 According to the user's description of the music they would like to listen to: {description}. 
-Please provide values for all fields above. Respond only with said values.
+If the description does not provide specific details, assume reasonable values based on common music preferences. Always respond in this exact format:
+
+acousticness: [value]
+danceability: [value]
+energy: [value]
+instrumentalness: [value]
+liveness: [value]
+valence: [value]
+tempo: [value]
+speechiness: [value]
+
+Do not request clarification, and do not include explanations in your response.
 '''
     )
     
@@ -47,10 +59,12 @@ Please provide values for all fields above. Respond only with said values.
     )
     
     custom_recommendation_template = PromptTemplate(
-        input_variables=['user_name', 'description'],
+        input_variables=['user_name', 'description', 'song_list'],
         template='''The user's name is: {user_name}. Please let the user know, in a professional and friendly way, that you have a list of songs
-        that you would like to recommend to them. In this context you are a web application called Songs 4-Geeks that is going to recommend music to the user. Please also
-        explain to the user why you chose those songs based on their request: {description}. Please restrict your response to 145 tokens. Please do not greet the user.
+        that you would like to recommend to them. In this context you are a web application called Songs 4-Geeks that is going to recommend music to the user. 
+        Take into account this list of songs that were recommended to the user: {song_list}. Please also explain to the user why you chose those songs based on
+        their request: {description}. Please don't focus too much on specific songs and more on the overall description. Please keep your response as short as 200 tokens,
+        with a small 10 tokens margin to finish the idea in an organic way. Please do not greet the user.
         
         '''
     )
@@ -65,7 +79,7 @@ Please provide values for all fields above. Respond only with said values.
 #Used by all prompt methods (greet_user, get_spotify_recommendation_data, give_user_recommendations)
     def prompt_llm(self, prompt_variable, prompt_template: PromptTemplate) -> str:
         # Initialize the LLM
-        llm = ChatOpenAI(model_name="gpt-4", temperature=0.7, max_tokens=150, api_key=self.openai_api_token)
+        llm = ChatOpenAI(model_name="gpt-4", temperature=0.7, max_tokens=250, api_key=self.openai_api_token)
         
         # Create the chain using the prompt template
         chain = prompt_template | llm
@@ -92,23 +106,38 @@ Please provide values for all fields above. Respond only with said values.
 
 #Parses the LLMs response into a dictionary of values
     def parse_model_output_to_dict(self, model_output) -> dict:
-        # Extract the content from the AIMessage object
-        content = model_output.content if hasattr(model_output, 'content') else model_output
-        
-        # Split the model output into lines
-        output_lines = content.strip().splitlines()
-        
-        # Initialize an empty dictionary to store the results
-        result_dict = {}
-        
-        # Loop through each line, split by ':' and add the result to the dictionary
-        for line in output_lines:
-            key, value = line.split(':')
-            result_dict[key.strip()] = float(value.strip())  # Convert the value to float if it's a numeric value
-
-        return result_dict
+        fallback_values = {
+            "acousticness": 0.5,
+            "danceability": 0.5,
+            "energy": 0.5,
+            "instrumentalness": 0.5,
+            "liveness": 0.2,
+            "valence": 0.5,
+            "tempo": 120,
+            "speechiness": 0.1,
+        }
+        try :
+            print('parsing model output')
+            print(model_output)
+            # Extract the content from the AIMessage object
+            content = model_output.content if hasattr(model_output, 'content') else model_output
+            print('COntent: ', content)
+            # Split the model output into lines
+            output_lines = content.strip().splitlines()
+            print('output lines: ', output_lines)
+            # Initialize an empty dictionary to store the results
+            result_dict = {}
+            
+            # Loop through each line, split by ':' and add the result to the dictionary
+            for line in output_lines:
+                print('every line: ', line)
+                key, value = line.split(':')
+                result_dict[key.strip()] = float(value.strip())  # Convert the value to float if it's a numeric value
+            return result_dict
+        except Exception as e:
+            return fallback_values
     
-    ########Pormpt functions##########
+    ########Prompt functions##########
     #Returns text greeting the user according to its username. Must call set_username({user's_name}) first
     def greet_user(self) -> str:
         model_response = self.prompt_llm( prompt_variable = self.user_name, prompt_template = self.greet_template)
@@ -119,6 +148,7 @@ Please provide values for all fields above. Respond only with said values.
     def get_spotify_recommendation_data(self, user_input : str) -> dict:
         self.user_request_prediction = user_input
         model_output = self.prompt_llm( prompt_variable=self.user_request_prediction, prompt_template=self.spotify_data_template)
+        print('model output: ', model_output)
         return self.parse_model_output_to_dict(model_output=model_output)
     
     def get_spotify_podcast_list(self, user_input : str) -> dict:
@@ -127,9 +157,10 @@ Please provide values for all fields above. Respond only with said values.
     
     #Given a list of song names, this method returns a custom message for the user with his requested recommendations.
     def give_user_recommendations(self, songs_list : list[tuple], song_previews : list[str] = None) -> str:
-        
-        model_output = self.prompt_llm( prompt_variable=[self.user_request_prediction, self.user_name], prompt_template=self.custom_recommendation_template)
+        prompt_song_list = ', '.join([song[0] + ' by ' + song[1] for song in songs_list])
+        model_output = self.prompt_llm( prompt_variable=[prompt_song_list, self.user_request_prediction, self.user_name], prompt_template=self.custom_recommendation_template)
         response = model_output
+        print(response)
         combined_song_list = [(song[0], song[1], song_previews[i] if i < len(song_previews) else None) for i, song in enumerate(songs_list)]  
         
         return response, combined_song_list
