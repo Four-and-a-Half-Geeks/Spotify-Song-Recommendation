@@ -44,21 +44,18 @@ def recommendation_list():
         user_name = session.get('user_name', 'Guest')
         openai_key = session.get('openai_key', 'Guest')
         recommendation_request = str(request.form["recommendation_request"])
-        print('Recommendation request: ', recommendation_request)
+        
         genres = str(request.form["genres"]).lower().split(',')
-        print('Genres: ', genres)
+        
         artists = str(request.form["artist_names"]).lower().split(',')
-        print('Artists: ', artists)
+        
         songs = str(request.form["song_names"]).lower().split(',')
-        print('Songs: ', songs)
         
         selected_genres = request.form.getlist("genre")
-        print('Selected genres: ', selected_genres)
 
         genres.extend(selected_genres)
         genres = [genre for genre in genres if genre]
-        print('Clean genres: ', genres)
-        print('Final genres: ', genres)
+        
         #NEEDS AT LEAST GENRES OR ARTIST OR SONG SEEDS OR SPOTIFYRECOMMENDER.PY THROWS AN ERROR
 
         # if genres == ['']:
@@ -68,24 +65,20 @@ def recommendation_list():
 
         # Load environment variables and check for keys
         load_dotenv()
-        print('Step: get ids')
+       
         client_id = os.getenv('SPOTIFY_CLIENT_ID')
         client_secret = os.getenv('SPOTIFY_CLIENT_SECRET')
-        print('Step: declare backend')
         backend = Backend(client_id, client_secret, openai_key)
-        print('Step: greet user')
+        
         greeting = backend.get_user_greeting(user_name)
-        print('Step: get spotify data')
+        
         print(backend.llm.get_spotify_recommendation_data(user_input=recommendation_request))
         spotify_data = backend.llm.get_spotify_recommendation_data(user_input=recommendation_request)
-        print('Spotify Data: ', spotify_data)
-        print('Step: get backend response')
+        
         backend_response = backend.get_user_recommendation(genres, artists, songs, None, spotify_data)
-        print('Backend response: ', backend_response)
-        print('Step: get greetings and recommendaitons')
+        
         greeting, recommendations = backend_response
-        print('Recommendations: ', recommendations)
-        print("Type of Recommendations:", type(recommendations))
+        
     except Exception as e:
         print("An error occurred:", e)
     

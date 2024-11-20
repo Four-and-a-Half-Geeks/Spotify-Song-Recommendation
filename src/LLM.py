@@ -117,20 +117,15 @@ Do not request clarification, and do not include explanations in your response.
             "speechiness": 0.1,
         }
         try :
-            print('parsing model output')
-            print(model_output)
             # Extract the content from the AIMessage object
             content = model_output.content if hasattr(model_output, 'content') else model_output
-            print('COntent: ', content)
             # Split the model output into lines
             output_lines = content.strip().splitlines()
-            print('output lines: ', output_lines)
             # Initialize an empty dictionary to store the results
             result_dict = {}
             
             # Loop through each line, split by ':' and add the result to the dictionary
             for line in output_lines:
-                print('every line: ', line)
                 key, value = line.split(':')
                 result_dict[key.strip()] = float(value.strip())  # Convert the value to float if it's a numeric value
             return result_dict
@@ -148,7 +143,6 @@ Do not request clarification, and do not include explanations in your response.
     def get_spotify_recommendation_data(self, user_input : str) -> dict:
         self.user_request_prediction = user_input
         model_output = self.prompt_llm( prompt_variable=self.user_request_prediction, prompt_template=self.spotify_data_template)
-        print('model output: ', model_output)
         return self.parse_model_output_to_dict(model_output=model_output)
     
     def get_spotify_podcast_list(self, user_input : str) -> dict:
@@ -160,7 +154,6 @@ Do not request clarification, and do not include explanations in your response.
         prompt_song_list = ', '.join([song[0] + ' by ' + song[1] for song in songs_list])
         model_output = self.prompt_llm( prompt_variable=[prompt_song_list, self.user_request_prediction, self.user_name], prompt_template=self.custom_recommendation_template)
         response = model_output
-        print(response)
         combined_song_list = [(song[0], song[1], song_previews[i] if i < len(song_previews) else None) for i, song in enumerate(songs_list)]  
         
         return response, combined_song_list
